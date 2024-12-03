@@ -13,8 +13,7 @@ WORKDIR /app
 
 # Copiar o script e arquivos necessários para o container
 COPY fire_detection.py .
-COPY yolo_model.pt .
-COPY video.mp4 .
+COPY best.pt .
 
 # Executar o fire_detection
 CMD ["python", "fire_detection.py"]
