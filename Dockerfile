@@ -1,19 +1,20 @@
-FROM cgr.dev/chainguard/python:latest-dev as builder
+FROM python:3.9-slim
 
+# Instalar dependências necessárias
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar bibliotecas Python
+RUN pip install --no-cache-dir ultralytics opencv-python
+
+# Definir o diretório de trabalho
 WORKDIR /app
 
-COPY requirements.txt .
+# Copiar o script e arquivos necessários para o container
+COPY fire_detection.py .
+COPY yolo_model.pt .
+COPY video.mp4 .
 
-RUN pip install -r requirements.txt
-
-FROM cgr.dev/chainguard/python:latest
-
-WORKDIR /app
-
-COPY --from=builder /home/nonroot/.local/lib/python3.12/site-packages /home/nonroot/.local/lib/python3.12/site-packages
-
-COPY . .
-
-EXPOSE 5000
-
-ENTRYPOINT [ "python", "/app/app.py" ]
+# Executar o fire_detection
+CMD ["python", "fire_detection.py"]
