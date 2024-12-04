@@ -70,7 +70,7 @@ def send_request(ip):
         print(str(e))
         pass
 
-def detection_handler(interval=0):
+def detection_handler(interval=60):
     global last_request_time
 
     while True:
